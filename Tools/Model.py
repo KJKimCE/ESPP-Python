@@ -1,6 +1,5 @@
 import datetime
-import StockAPI
-import Utils
+from Tools import Utils, StockAPI
 
 
 class Model:

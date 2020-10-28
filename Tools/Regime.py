@@ -1,5 +1,5 @@
 import datetime
-import Utils
+from Tools import Utils
 
 
 class Regime:
@@ -87,26 +87,12 @@ class Qualifying(Regime):
 
 class CurrentSales:
     regimes = []
-    # disqualifyingShort = None
-    # disqualifyingLong = None
-    # qualifying = None
-    # regimeDates = {}
 
     def __init__(self, model, taxBracket):
         self.regimes.append(DisqualifyingShort(model, taxBracket, model.currentPrice))
         self.regimes.append(DisqualifyingLong(model, taxBracket, model.currentPrice))
         self.regimes.append(Qualifying(model, taxBracket, model.currentPrice))
-        # self.disqualifyingShort = DisqualifyingShort(model, taxBracket, model.currentPrice)
-        # self.disqualifyingLong = DisqualifyingLong(model, taxBracket, model.currentPrice)
-        # self.qualifying = Qualifying(model, taxBracket, model.currentPrice)
-        #
-        # self.regimeDates[self.disqualifyingShort.regimeType] = (self.disqualifyingShort.dateFrom, self.disqualifyingShort.dateTo)
-        # self.regimeDates[self.disqualifyingLong.regimeType] = (self.disqualifyingLong.dateFrom, self.disqualifyingLong.dateTo)
-        # self.regimeDates[self.qualifying.regimeType] = (self.qualifying.dateFrom, self.qualifying.dateTo)
 
     def print(self):
         for regime in self.regimes:
             regime.print()
-        # self.disqualifyingShort.print()
-        # self.disqualifyingLong.print()
-        # self.qualifying.print()

@@ -1,8 +1,8 @@
-from Regime import DisqualifyingShort
-from Regime import DisqualifyingLong
-from Regime import Qualifying
-from Benefit import Benefit
-import Utils
+from Tools.Regime import DisqualifyingShort
+from Tools.Regime import DisqualifyingLong
+from Tools.Regime import Qualifying
+from Tools.Benefit import Benefit
+from Tools import Utils
 
 
 class FutureSale:
@@ -10,9 +10,10 @@ class FutureSale:
     date = None
     expectedReturn = None
     predictedPrice = None
-    benefits = []
+    benefits = None
 
     def __init__(self, model, taxBracket, currentSales, futureDate):
+        self.benefits = []
         self.date = futureDate
         self.expectedReturn = abs(self.date - model.today).days / 365.0 * .08
         self.predictedPrice = model.currentPrice * (1 + self.expectedReturn)
@@ -52,3 +53,6 @@ class FutureSale:
 
         for benefit in self.benefits:
             benefit.print()
+
+    def __del__(self):
+        self.benefits = []

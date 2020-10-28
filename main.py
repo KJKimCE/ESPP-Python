@@ -1,7 +1,7 @@
-from Model import Model
-from TaxBracket import TaxBracket
-from Regime import CurrentSales
-from FutureSale import FutureSale
+from Tools.Model import Model
+from Tools.TaxBracket import TaxBracket
+from Tools.Regime import CurrentSales
+from Tools.FutureSale import FutureSale
 import datetime
 
 
@@ -16,6 +16,7 @@ def run():
     income = float(input("Enter Tax Bracket % (xx.xx) - Income: "))
     shortTerm = float(input("Enter Tax Bracket % (xx.xx) - Short Term: "))
     longTerm = float(input("Enter Tax Bracket % (xx.xx) - Long Term: "))
+    print('****************************************************')
 
     model = Model(symbol, quantity, purchaseDate, transactionCost, db / 100)
     model.print()
@@ -27,6 +28,7 @@ def run():
     cs.print()
 
     while True:
+        print('****************************************************')
         date = input("Enter the future date (yyyymmdd): ")
         if date == '0':
             break
@@ -39,4 +41,3 @@ def run():
 
 if __name__ == '__main__':
     run()
-
