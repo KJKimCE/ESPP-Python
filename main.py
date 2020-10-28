@@ -5,7 +5,7 @@ from FutureSale import FutureSale
 import datetime
 
 
-def test():
+def run():
 
     symbol = input("Enter the stock symbol: ")
     quantity = int(input("Enter the quantity: "))
@@ -26,13 +26,17 @@ def test():
     cs = CurrentSales(model, taxBracket)
     cs.print()
 
-    date = input("Enter the future date (yyyymmdd): ")
-    futureDate = datetime.datetime.strptime(date, "%Y%m%d").date()
+    while True:
+        date = input("Enter the future date (yyyymmdd): ")
+        if date == '0':
+            break
+        futureDate = datetime.datetime.strptime(date, "%Y%m%d").date()
 
-    future = FutureSale(model, taxBracket, cs, futureDate)
-    future.print()
+        future = FutureSale(model, taxBracket, cs, futureDate)
+        future.print()
+        print("*Note: Enter 0 to exit")
 
 
 if __name__ == '__main__':
-    test()
+    run()
 

@@ -39,13 +39,3 @@ def getStockPrice(symbol, date):
         date = datetime.date.today()
 
     return price, date
-
-
-def testAPI(symbol, year, month, day):
-    price, date = getStockPrice(symbol, datetime.date(year, month, day))
-    print(price)
-    print(date)
-
-
-if __name__ == '__main__':
-    testAPI('baba', 2017, 12, 23)
