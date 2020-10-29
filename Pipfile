@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 requests = "*"
 pyinstaller = "*"
+python-dateutil = "*"
 
 [requires]
 python_version = "3.8"

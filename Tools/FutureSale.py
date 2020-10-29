@@ -3,6 +3,7 @@ from Tools.Regime import DisqualifyingLong
 from Tools.Regime import Qualifying
 from Tools.Benefit import Benefit
 from Tools import Utils
+import heapq
 
 
 class FutureSale:
@@ -11,9 +12,11 @@ class FutureSale:
     expectedReturn = None
     predictedPrice = None
     benefits = None
+    regimes = None
 
     def __init__(self, model, taxBracket, currentSales, futureDate):
         self.benefits = []
+        self.regimes = []
         self.date = futureDate
         self.expectedReturn = abs(self.date - model.today).days / 365.0 * .08
         self.predictedPrice = model.currentPrice * (1 + self.expectedReturn)
@@ -32,9 +35,13 @@ class FutureSale:
                     break
             benefitIndex += 1
 
+        heapq.heappush(self.regimes, (-1 * self.regime.finalProceeds, self.regime.regimeType))
         benefitIndex -= 1
         while benefitIndex >= 0:
-            self.benefits.append(Benefit(model, taxBracket, currentSales.regimes[benefitIndex], self))
+            benefit = Benefit(model, taxBracket, currentSales.regimes[benefitIndex], self)
+            self.benefits.append(benefit)
+            heapq.heappush(self.regimes, (-1 * benefit.finalProceeds, benefit.regimeType))
+            # self.regimes.append((benefit.difference, benefit.regimeType))
             benefitIndex -= 1
 
     def print(self):
@@ -54,5 +61,5 @@ class FutureSale:
         for benefit in self.benefits:
             benefit.print()
 
-    def __del__(self):
-        self.benefits = []
+        print(f"DECISION: {heapq.heappop(self.regimes)[1]}")
+        print()

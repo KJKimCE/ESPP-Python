@@ -1,4 +1,5 @@
 import datetime
+from dateutil.relativedelta import relativedelta
 from Tools import Utils, StockAPI
 
 
@@ -19,7 +20,7 @@ class Model:
     diversificationBenefit = None
 
     def __init__(self, symbol, quantity, purchaseDate, transactionCost, db):
-        self.grantDate = datetime.date(purchaseDate.year, (purchaseDate.month - 2), 1)
+        self.grantDate = purchaseDate + relativedelta(months=-2, day=1)
         self.purchaseDate = purchaseDate
         self.exerciseDate = purchaseDate
         self.today = datetime.date.today()
