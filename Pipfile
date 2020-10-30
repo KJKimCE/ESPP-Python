@@ -4,10 +4,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pyinstaller = "*"
 
 [packages]
 requests = "*"
-pyinstaller = "*"
 python-dateutil = "*"
 
 [requires]
