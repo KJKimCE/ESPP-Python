@@ -1,4 +1,4 @@
 Tools/secret.json
-.DS_ignore
+.DS_Store
 __pycache__/
 .idea/
