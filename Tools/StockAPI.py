@@ -1,18 +1,13 @@
+from Tools import config
 import requests
 from requests import HTTPError
 import datetime
-import json
-import os
 
 
 def getParameters():
-    file_name = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'secret.json')
-    with open(file_name, "r") as file:
-        secret = json.load(file)
-
     parameters = {
         "chartByDay": "true",
-        "token": secret['API_KEY']
+        "token": config.API_KEY
     }
 
     return parameters

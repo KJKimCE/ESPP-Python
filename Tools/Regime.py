@@ -1,5 +1,5 @@
-import datetime
 from Tools import Utils
+import datetime
 
 
 class Regime:

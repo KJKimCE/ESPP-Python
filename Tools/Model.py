@@ -1,6 +1,6 @@
+from Tools import Utils, StockAPI
 import datetime
 from dateutil.relativedelta import relativedelta
-from Tools import Utils, StockAPI
 
 
 class Model:

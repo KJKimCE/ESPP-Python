@@ -1,4 +1,4 @@
-Tools/secret.json
+Tools/config.py
 .DS_Store
 __pycache__/
 .idea/

@@ -2,18 +2,13 @@ from Tools.Model import Model
 from Tools.TaxBracket import TaxBracket
 from Tools.Regime import CurrentSales
 from Tools.FutureSale import FutureSale
+from Tools import config
 import datetime
-import os
-import json
 
 
 def checkAPIKey():
-    file_name = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Tools/secret.json')
-    with open(file_name, "r") as file:
-        secret = json.load(file)
-
-    if secret['API_KEY'] == 'YOUR_API_KEY_HERE':
-        raise SystemExit(Exception("Please replace the API Key. Instructions are detailed in the ReadMe"))
+    if config.API_KEY == "YOUR_API_KEY_HERE":
+        raise SystemExit(Exception("Please replace the API Key. Instructions are detailed in the README"))
 
 
 def getModel():
