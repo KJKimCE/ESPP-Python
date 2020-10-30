@@ -25,9 +25,9 @@ class Model:
         self.exerciseDate = purchaseDate
         self.today = datetime.date.today()
 
-        self.grantPrice, self.grantDate = StockAPI.getStockPrice(symbol, self.grantDate)
-        self.exercisePrice, self.exerciseDate = StockAPI.getStockPrice(symbol, self.exerciseDate)
         self.currentPrice, self.today = StockAPI.getStockPrice(symbol, self.today)
+        self.exercisePrice, self.exerciseDate = StockAPI.getStockPrice(symbol, self.exerciseDate)
+        self.grantPrice, self.grantDate = StockAPI.getStockPrice(symbol, self.grantDate)
         self.purchasePrice = min(self.grantPrice, self.exercisePrice)
         self.discountedPrice = self.purchasePrice * (1 - 0.15)
         self.quantity = quantity

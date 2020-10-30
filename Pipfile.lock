@@ -62,10 +62,10 @@
         },
         "pyinstaller-hooks-contrib": {
             "hashes": [
-                "sha256:a5fd45a920012802e3f2089e1d3501ef2f49265dfea8fc46c3310f18e3326c91",
-                "sha256:c382f3ac1a42b45cfecd581475c36db77da90e479b2f5bcb6d840d21fa545114"
+                "sha256:bf4543a16c9c6e9dd2d70ea3fee78b81d3357a68f706df471d990213892259d9",
+                "sha256:dd752c88c1c7bb6920f7de248c12d4411c0463877e5e64afdc4f7e93dff9fc94"
             ],
-            "version": "==2020.9"
+            "version": "==2020.10"
         },
         "python-dateutil": {
             "hashes": [

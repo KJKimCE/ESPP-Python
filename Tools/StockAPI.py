@@ -1,24 +1,36 @@
 import requests
 from requests import HTTPError
 import datetime
+import json
+import os
+
+
+def getParameters():
+    file_name = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'secret.json')
+    with open(file_name, "r") as file:
+        secret = json.load(file)
+
+    parameters = {
+        "chartByDay": "true",
+        "token": secret['API_KEY']
+    }
+
+    return parameters
 
 
 def getStockPrice(symbol, date):
-    iex_params = {
-        "chartByDay": "true",
-        "token": "pk_b2b9f0cda72d4f188877235a6ddf1146"
-    }
+    iex_params = getParameters()
 
     delta = 1
     if date == datetime.date.today():
         delta = -1
 
+    price = 0
     for i in range(5):
         dateString = str(date.year) + format(date.month, '02') + format(date.day, '02')
         response = requests.get(f"https://cloud.iexapis.com/stable/stock/{symbol}/chart/date/{dateString}",
                                 params=iex_params)
 
-        price = 0
         if response.status_code == 200:
             jsonResponse = response.json()
             if not jsonResponse:
