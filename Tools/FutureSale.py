@@ -22,7 +22,7 @@ class FutureSale:
         self.predictedPrice = model.currentPrice * (1 + self.expectedReturn)
 
         benefitIndex = 0
-        for regime in currentSales.regimes:
+        for regime in currentSales:
             if regime.dateFrom <= self.date < regime.dateTo:
                 if regime.regimeType == 'Disqualifying Short':
                     self.regime = DisqualifyingShort(model, taxBracket, self.predictedPrice)
@@ -38,8 +38,9 @@ class FutureSale:
         heapq.heappush(self.regimes, (-1 * self.regime.finalProceeds, self.regime.regimeType))
         benefitIndex -= 1
         while benefitIndex >= 0:
-            benefit = Benefit(model, taxBracket, currentSales.regimes[benefitIndex], self)
+            benefit = Benefit(model, taxBracket, currentSales[benefitIndex], self)
             self.benefits.append(benefit)
+
             heapq.heappush(self.regimes, (-1 * benefit.finalProceeds, benefit.regimeType))
             # self.regimes.append((benefit.difference, benefit.regimeType))
             benefitIndex -= 1

@@ -1,6 +1,6 @@
 from Tools.Model import Model
 from Tools.TaxBracket import TaxBracket
-from Tools.Regime import CurrentSales
+from Tools.Regime import DisqualifyingShort, DisqualifyingLong, Qualifying
 from Tools.FutureSale import FutureSale
 from Tools import config
 import datetime
@@ -46,20 +46,21 @@ def getTaxBracket():
     return taxBracket
 
 
-def runESPP():
-    checkAPIKey()
-    model = getModel()
-    taxBracket = getTaxBracket()
+def getCurrentSales(model, taxBracket):
+    regimes = [DisqualifyingShort(model, taxBracket, model.currentPrice),
+               DisqualifyingLong(model, taxBracket, model.currentPrice),
+               Qualifying(model, taxBracket, model.currentPrice)]
 
-    model.print()
-    taxBracket.print()
+    return regimes
+
+
+def printLine():
     print('****************************************************')
 
-    cs = CurrentSales(model, taxBracket)
-    cs.print()
 
+def runFutureSaleModel(model, taxBracket, currentSales):
     while True:
-        print('****************************************************')
+        printLine()
         print("*Note: Enter 0 to exit")
         date = input("Enter the future date (yyyymmdd): ")
         if date == '0':
@@ -77,8 +78,24 @@ def runESPP():
             print()
             continue
 
-        future = FutureSale(model, taxBracket, cs, futureDate)
+        future = FutureSale(model, taxBracket, currentSales, futureDate)
         future.print()
+
+
+def runESPP():
+    checkAPIKey()
+    model = getModel()
+    taxBracket = getTaxBracket()
+
+    model.print()
+    taxBracket.print()
+
+    currentSales = getCurrentSales(model, taxBracket)
+    for regime in currentSales:
+        regime.print()
+
+    printLine()
+    runFutureSaleModel(model, taxBracket, currentSales)
 
 
 if __name__ == '__main__':

@@ -1,8 +1,9 @@
 from Tools import Utils
+from abc import ABCMeta, abstractmethod
 import datetime
 
 
-class Regime:
+class Regime(metaclass=ABCMeta):
     regimeType = None
     saleProceeds = None
     saleProfit = None
@@ -15,9 +16,18 @@ class Regime:
     dateFrom = None
     dateTo = None
 
-    def initialize(self, model, price):
+    def __init__(self, model, taxBracket, price):
+        self.calculateSales(model, price)
+        self.calculateRegime(model)
+        self.calculateTaxes(taxBracket)
+
+    def calculateSales(self, model, price):
         self.saleProceeds = model.quantity * price - model.transactionCost
         self.saleProfit = self.saleProceeds - model.quantity * model.discountedPrice
+
+    @abstractmethod
+    def calculateRegime(self, model):
+        pass
 
     def calculateTaxes(self, taxBracket):
         self.tax = self.income * taxBracket.income + self.shortTerm * taxBracket.shortTerm + self.longTerm * taxBracket.longTerm
@@ -38,12 +48,7 @@ class Regime:
 
 
 class DisqualifyingShort(Regime):
-    def __init__(self, model, taxBracket, price):
-        Regime.initialize(self, model, price)
-        self.setInfo(model)
-        Regime.calculateTaxes(self, taxBracket)
-
-    def setInfo(self, model):
+    def calculateRegime(self, model):
         self.regimeType = "Disqualifying Short"
         self.dateFrom = model.exerciseDate + datetime.timedelta(days=45)
         self.dateTo = model.purchaseDate + datetime.timedelta(days=365+45)
@@ -54,28 +59,18 @@ class DisqualifyingShort(Regime):
 
 
 class DisqualifyingLong(Regime):
-    def __init__(self, model, taxBracket, price):
-        Regime.initialize(self, model, price)
-        self.setInfo(model)
-        Regime.calculateTaxes(self, taxBracket)
-
-    def setInfo(self, model):
-        self.regimeType = "Disqualifying Long";
+    def calculateRegime(self, model):
+        self.regimeType = "Disqualifying Long"
         self.dateFrom = model.purchaseDate + datetime.timedelta(days=365+45)
         self.dateTo = max(model.grantDate + datetime.timedelta(days=730), model.exerciseDate + datetime.timedelta(days=365+15))
 
-        self.income = model.quantity * (model.exercisePrice - model.discountedPrice);
-        self.shortTerm = 0;
-        self.longTerm = self.saleProfit - self.income;
+        self.income = model.quantity * (model.exercisePrice - model.discountedPrice)
+        self.shortTerm = 0
+        self.longTerm = self.saleProfit - self.income
 
 
 class Qualifying(Regime):
-    def __init__(self, model, taxBracket, price):
-        Regime.initialize(self, model, price)
-        self.setInfo(model)
-        Regime.calculateTaxes(self, taxBracket)
-
-    def setInfo(self, model):
+    def calculateRegime(self, model):
         self.regimeType = "Qualifying"
         self.dateFrom = max(model.grantDate + datetime.timedelta(days=730), model.exerciseDate + datetime.timedelta(days=365+15))
         self.dateTo = datetime.date.max
@@ -83,16 +78,3 @@ class Qualifying(Regime):
         self.income = model.quantity * max(min(model.currentPrice - model.discountedPrice - model.transactionCost, .15 * model.grantPrice), 0.0)
         self.shortTerm = 0
         self.longTerm = self.saleProfit - self.income
-
-
-class CurrentSales:
-    regimes = []
-
-    def __init__(self, model, taxBracket):
-        self.regimes.append(DisqualifyingShort(model, taxBracket, model.currentPrice))
-        self.regimes.append(DisqualifyingLong(model, taxBracket, model.currentPrice))
-        self.regimes.append(Qualifying(model, taxBracket, model.currentPrice))
-
-    def print(self):
-        for regime in self.regimes:
-            regime.print()
