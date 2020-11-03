@@ -2,12 +2,10 @@
 Employee Stock Purchase Plan Model
 
 -----------------------------------------------------------------
-**IMPORTANT**
-
-You MUST do the following to query for the stock prices.
+**IMPORTANT** - You MUST follow the steps below to query for the stock prices.
 
 1. Visit [IEX Cloud](iexcloud.io) to create an API Key.
-2. Replace YOUR_API_KEY_HERE in the Tools/config_sample.py file with your newly created API Key.
+2. In Tools/config_sample.py - replace YOUR_API_KEY_HERE with your API Key.
 3. Rename this file to config.py.
 
 -----------------------------------------------------------------

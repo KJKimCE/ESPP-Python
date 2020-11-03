@@ -37,7 +37,7 @@ def getStockPrice(symbol, date):
                 for key, val in pair.items():
                     stockResponse[key] = val
 
-            price = float(stockResponse['uOpen'])
+            price = float(stockResponse['uClose'])
             break
         else:
             raise SystemExit(HTTPError(f"HTTP Status Code {response.status_code} returned for symbol: {symbol} on {date}"))
