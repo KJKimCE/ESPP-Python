@@ -34,6 +34,6 @@ Tax Bracket:
     Short Term
     Long Term
     
-Future Sale (Loop):
+Future Sale:
 
     Future Date

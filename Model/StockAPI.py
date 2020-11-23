@@ -40,7 +40,8 @@ def getStockPrice(symbol, date):
             price = float(stockResponse['uClose'])
             break
         else:
-            raise SystemExit(HTTPError(f"HTTP Status Code {response.status_code} returned for symbol: {symbol} on {date}"))
+            # raise SystemExit(HTTPError(f"HTTP Status Code {response.status_code} returned for symbol: {symbol} on {date}"))
+            raise ValueError(f"Invalid Stock Symbol: {symbol}.")
 
     if date > datetime.date.today():
         date = datetime.date.today()
