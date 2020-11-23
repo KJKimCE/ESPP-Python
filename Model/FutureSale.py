@@ -1,7 +1,7 @@
-from Tools.Regime import DisqualifyingShort
-from Tools.Regime import DisqualifyingLong
-from Tools.Regime import Qualifying
-from Tools.Benefit import Benefit
+from Model.Regime import DisqualifyingShort
+from Model.Regime import DisqualifyingLong
+from Model.Regime import Qualifying
+from Model.Benefit import Benefit
 from Tools import Utils
 import heapq
 
@@ -13,6 +13,7 @@ class FutureSale:
     predictedPrice = None
     benefits = None
     regimes = None
+    decision = None
 
     def __init__(self, model, taxBracket, currentSales, futureDate):
         self.benefits = []
@@ -45,6 +46,8 @@ class FutureSale:
             # self.regimes.append((benefit.difference, benefit.regimeType))
             benefitIndex -= 1
 
+        self.decision = heapq.heappop(self.regimes)[1]
+
     def print(self):
         print(f"Future - {self.regime.regimeType}")
         print(f"Date: {self.date}")
@@ -62,5 +65,5 @@ class FutureSale:
         for benefit in self.benefits:
             benefit.print()
 
-        print(f"DECISION: {heapq.heappop(self.regimes)[1]}")
+        print(f"DECISION: {self.decision}")
         print()

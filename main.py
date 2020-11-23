@@ -1,8 +1,10 @@
-from Tools.Model import Model
-from Tools.TaxBracket import TaxBracket
-from Tools.Regime import DisqualifyingShort, DisqualifyingLong, Qualifying
-from Tools.FutureSale import FutureSale
+from Model.Model import Model
+from Model.TaxBracket import TaxBracket
+from Model.Regime import DisqualifyingShort, DisqualifyingLong, Qualifying
+from Model.FutureSale import FutureSale
 from Tools import config
+from View.ModelParams import ModelParams
+from View.TaxBracketParams import TaxBracketParams
 import datetime
 
 
@@ -12,9 +14,10 @@ def checkAPIKey():
 
 
 def getModel():
-    symbol = input("Enter the stock symbol: ")
-    quantity = int(input("Enter the quantity: "))
-    purchaseDate = None
+    modelParams = ModelParams()
+    modelParams.symbol = input("Enter the stock symbol: ")
+    modelParams.quantity = int(input("Enter the quantity: "))
+
     while True:
         date = input("Enter the purchase date (yyyymmdd): ")
         try:
@@ -28,22 +31,25 @@ def getModel():
             print()
             continue
         break
+    modelParams.purchaseDate = date
+    modelParams.transactionCost = float(input("Enter the transaction cost: "))
+    modelParams.db = float(input("Enter the diversification benefit % (xx.xx): "))
+    if not modelParams.valid:
+        modelParams.validate()
 
-    transactionCost = float(input("Enter the transaction cost: "))
-    db = float(input("Enter the diversification benefit % (xx.xx): "))
-
-    model = Model(symbol, quantity, purchaseDate, transactionCost, db / 100)
-    return model
+    return Model(modelParams)
 
 
 def getTaxBracket():
-    income = float(input("Enter Tax Bracket % (xx.xx) - Income: "))
-    shortTerm = float(input("Enter Tax Bracket % (xx.xx) - Short Term: "))
-    longTerm = float(input("Enter Tax Bracket % (xx.xx) - Long Term: "))
+    taxBracketParams = TaxBracketParams()
+    taxBracketParams.income = float(input("Enter Tax Bracket % (xx.xx) - Income: "))
+    taxBracketParams.shortTerm = float(input("Enter Tax Bracket % (xx.xx) - Short Term: "))
+    taxBracketParams.longTerm = float(input("Enter Tax Bracket % (xx.xx) - Long Term: "))
 
-    taxBracket = TaxBracket(income / 100, shortTerm / 100, longTerm / 100)
+    if not taxBracketParams.valid:
+        taxBracketParams.validate()
 
-    return taxBracket
+    return TaxBracket(taxBracketParams)
 
 
 def getCurrentSales(model, taxBracket):
@@ -94,7 +100,6 @@ def runESPP():
     for regime in currentSales:
         regime.print()
 
-    printLine()
     runFutureSaleModel(model, taxBracket, currentSales)
 
 
