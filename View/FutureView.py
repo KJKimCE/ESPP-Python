@@ -1,6 +1,5 @@
 from Tools import Utils
-from Model.FutureSale import FutureSale
-from Model.FutureSale import Benefit
+from Model.FutureSale import FutureSale, Benefit
 import View.ModelView as ModelView
 import tkinter as tk
 from tkinter import ttk

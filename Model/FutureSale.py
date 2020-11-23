@@ -1,6 +1,4 @@
-from Model.Regime import DisqualifyingShort
-from Model.Regime import DisqualifyingLong
-from Model.Regime import Qualifying
+from Model.Regime import DisqualifyingShort, DisqualifyingLong, Qualifying
 from Model.Benefit import Benefit
 from Tools import Utils
 import heapq
