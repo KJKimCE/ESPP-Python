@@ -12,7 +12,9 @@ class ModelParams:
     def validate(self):
         self.valid = True
         self.symbol = self.symbol.upper()
-        self.quantity = int(self.quantity)
-        self.purchaseDate = Utils.validateDate(self.purchaseDate)
-        self.transactionCost = float(self.transactionCost)
-        self.db = float(self.db) / 100
+        self.quantity = Utils.formatInt(self.quantity, "Quantity")
+        self.purchaseDate = Utils.formatDate(self.purchaseDate)
+        if self.purchaseDate > Utils.runDate:
+            raise ValueError(f"Invalid Purchase Date: {self.purchaseDate}")
+        self.transactionCost = Utils.formatFloat(self.transactionCost, "Transaction Cost")
+        self.db = Utils.formatFloat(self.db, "Diversification Benefit") / 100

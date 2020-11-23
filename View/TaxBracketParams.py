@@ -2,7 +2,7 @@ def validateTaxBracket(bracket):
     try:
         return float(bracket) / 100
     except ValueError:
-        raise ValueError(f"Invalid Tax Bracket: {bracket}.")
+        raise ValueError(f"Invalid Tax Bracket: {bracket}")
 
 
 class TaxBracketParams:

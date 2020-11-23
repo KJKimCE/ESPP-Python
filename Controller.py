@@ -6,7 +6,12 @@ from Model.FutureSale import FutureSale
 from View.ModelParams import ModelParams
 from View.ModelView import ModelView
 from View.FutureView import FutureView
-from Tools import Utils
+from Tools import Utils, config
+
+
+def checkAPIKey():
+    if config.API_KEY == "YOUR_API_KEY_HERE":
+        raise SystemExit(Exception("Please replace the API Key. Instructions are detailed in the README"))
 
 
 def changed(model: Model, modelParams: ModelParams):
@@ -87,7 +92,10 @@ class Controller:
     # region Compute Future (private)
     def _computeFutureSale(self, future_view: FutureView):
         futureDate = future_view.getFutureDate()
-        futureDate = Utils.validateDate(futureDate)
+        futureDate = Utils.formatDate(futureDate)
+        if futureDate <= Utils.runDate:
+            raise ValueError(f"Invalid Future Date: {futureDate}")
+
         return FutureSale(self.model, self.taxBracket, self.currentSales, futureDate)
     # endregion
     # endregion
@@ -99,5 +107,6 @@ class Controller:
 
 
 if __name__ == '__main__':
+    checkAPIKey()
     controller = Controller()
     controller.main()
