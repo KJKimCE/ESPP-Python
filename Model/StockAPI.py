@@ -36,7 +36,7 @@ def getStockPrice(symbol, date):
                 for key, val in pair.items():
                     stockResponse[key] = val
 
-            price = float(stockResponse['uClose'])
+            price = float(stockResponse['close'])
             break
         else:
             raise ValueError(f"Invalid Stock Symbol: {symbol}")
